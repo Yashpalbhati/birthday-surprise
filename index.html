@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -16,16 +16,24 @@ body {
     overflow: hidden;
 }
 
+/* Start Button */
+.startBtn {
+    position: absolute;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 20px;
+    background: white;
+    cursor: pointer;
+    z-index: 10;
+}
+
 /* Rose */
 .rose {
     width: 200px;
     cursor: pointer;
-    transition: transform 0.3s;
+    display: none;
     animation: float 3s ease-in-out infinite;
-}
-
-.rose:hover {
-    transform: scale(1.1);
 }
 
 @keyframes float {
@@ -54,24 +62,21 @@ body {
 }
 
 @keyframes sparkle {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-200px);
-        opacity: 0;
-    }
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-200px); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎵 Music -->
-<audio id="music">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b7cfd.mp3" type="audio/mpeg">
+<!-- 🎵 LOCAL MUSIC -->
+<audio id="music" preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
+
+<!-- 🔥 START BUTTON (important for sound) -->
+<button class="startBtn" id="startBtn">Tap to Start 💖</button>
 
 <!-- 🌹 Rose -->
 <img 
@@ -84,11 +89,27 @@ src="https://pngimg.com/uploads/rose/rose_PNG659.png"
 <div class="message" id="message"></div>
 
 <script>
+const startBtn = document.getElementById("startBtn");
 const rose = document.getElementById("rose");
 const message = document.getElementById("message");
 const music = document.getElementById("music");
 
 const text = "Happy Birthday Sukhi Pookie 🎀🌹\n(Sweetest person ever 🍓🤍)";
+
+// 💖 START (fixes music issue 100%)
+startBtn.onclick = function() {
+    startBtn.style.display = "none";
+    rose.style.display = "block";
+
+    music.volume = 1;
+    music.currentTime = 0;
+
+    music.play().then(()=>{
+        console.log("Music started 🎵");
+    }).catch(()=>{
+        alert("Tap again to enable music 🎵");
+    });
+};
 
 // 💌 Typing effect
 function typeText() {
@@ -107,22 +128,19 @@ function typeText() {
 
 // ✨ Sparkles
 function createSparkles() {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 40; i++) {
         let s = document.createElement("div");
         s.classList.add("sparkle");
         s.style.left = Math.random() * window.innerWidth + "px";
         s.style.top = window.innerHeight + "px";
-        s.style.animationDuration = (2 + Math.random()*3) + "s";
         document.body.appendChild(s);
-
         setTimeout(() => s.remove(), 4000);
     }
 }
 
-// 🎉 Click event
+// 🌹 Click rose
 rose.onclick = function() {
     rose.style.display = "none";
-    music.play(); // works because user clicked
     typeText();
     createSparkles();
 };
