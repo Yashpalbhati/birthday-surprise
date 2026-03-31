@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For U! 💖</title>
+<title>Birthday Surprise 💖</title>
 
 <style>
 body {
@@ -16,7 +16,7 @@ body {
     overflow: hidden;
 }
 
-/* Soft glow overlay */
+/* Glow */
 body::before {
     content: "";
     position: absolute;
@@ -32,7 +32,6 @@ body::before {
     transition: transform 0.3s, filter 0.3s;
     z-index: 2;
 }
-
 .flower:hover {
     transform: scale(1.2);
     filter: drop-shadow(0 0 10px #fff);
@@ -50,28 +49,26 @@ body::before {
 .message h1 {
     font-size: 40px;
     color: #ff4081;
-    margin-bottom: 10px;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ff80ab;
 }
 
-/* Ribbon */
 .ribbon {
     font-size: 50px;
     margin: 10px 0;
     animation: bounce 1s infinite alternate;
 }
 
-/* Text */
 .message p {
     font-size: 20px;
     color: #444;
 }
 
-/* Floating hearts */
+/* Hearts */
 .heart {
     position: absolute;
     color: white;
     font-size: 20px;
-    animation: floatUp 5s linear infinite;
+    animation: floatUp 5s linear;
     opacity: 0.7;
 }
 
@@ -101,12 +98,10 @@ body::before {
 
 <body>
 
-<!-- Floating hearts -->
-<div class="heart" style="left:10%">💖</div>
-<div class="heart" style="left:30%">💗</div>
-<div class="heart" style="left:50%">💞</div>
-<div class="heart" style="left:70%">💕</div>
-<div class="heart" style="left:90%">💓</div>
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="birthday.mp3" type="audio/mpeg">
+</audio>
 
 <!-- Flower -->
 <div class="flower" onclick="showMessage()">🌸</div>
@@ -114,17 +109,61 @@ body::before {
 <!-- Message -->
 <div class="message" id="msg">
     <h1>🎉 Happy Birthday Sukhi Pookie 🎂</h1>
-    
     <div class="ribbon">🎀</div>
-    
-    <p>May your day be as sweet and lovely as you 💖✨</p>
+    <p id="typing"></p>
 </div>
 
 <script>
+
+/* Typing Effect */
+const text = "May your day be as sweet and lovely as you 💖✨";
+let i = 0;
+
+function typeEffect() {
+    if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeEffect, 50);
+    }
+}
+
+/* Confetti */
+function createConfetti() {
+    for (let i = 0; i < 40; i++) {
+        let confetti = document.createElement("div");
+        confetti.innerHTML = "🎉";
+        confetti.style.position = "absolute";
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.top = Math.random() * 100 + "vh";
+        confetti.style.fontSize = "20px";
+        confetti.style.animation = "floatUp 3s linear";
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 3000);
+    }
+}
+
+/* Floating Hearts */
+setInterval(() => {
+    let heart = document.createElement("div");
+    heart.innerHTML = "💖";
+    heart.classList.add("heart");
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+}, 500);
+
+/* Main Click */
 function showMessage() {
     document.querySelector(".flower").style.display = "none";
     document.getElementById("msg").style.display = "block";
+
+    document.getElementById("music").play(); // play music
+    createConfetti();
+    typeEffect();
 }
+
 </script>
 
 </body>
