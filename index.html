@@ -1,8 +1,8 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You 💖</title>
+<title>For U! 💖</title>
 
 <style>
 body {
@@ -11,139 +11,120 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to top, #ffdde1, #ee9ca7);
+    background: linear-gradient(to top, #ffc0cb, #ff9a9e);
     font-family: Arial, sans-serif;
     overflow: hidden;
 }
 
-/* Start Button */
-.startBtn {
+/* Soft glow overlay */
+body::before {
+    content: "";
     position: absolute;
-    padding: 12px 25px;
-    font-size: 18px;
-    border: none;
-    border-radius: 20px;
-    background: white;
-    cursor: pointer;
-    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3), transparent);
 }
 
-/* Rose */
-.rose {
-    width: 200px;
+/* Flower */
+.flower {
+    font-size: 80px;
     cursor: pointer;
-    display: none;
-    animation: float 3s ease-in-out infinite;
+    transition: transform 0.3s, filter 0.3s;
+    z-index: 2;
 }
 
-@keyframes float {
-    0% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0); }
+.flower:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 10px #fff);
 }
 
 /* Message */
 .message {
     position: absolute;
     text-align: center;
-    color: white;
+    display: none;
+    animation: fadeIn 1.5s ease-in-out;
+    z-index: 2;
+}
+
+.message h1 {
     font-size: 40px;
-    opacity: 0;
+    color: #ff4081;
+    margin-bottom: 10px;
 }
 
-/* Sparkles */
-.sparkle {
+/* Ribbon */
+.ribbon {
+    font-size: 50px;
+    margin: 10px 0;
+    animation: bounce 1s infinite alternate;
+}
+
+/* Text */
+.message p {
+    font-size: 20px;
+    color: #444;
+}
+
+/* Floating hearts */
+.heart {
     position: absolute;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    animation: sparkle 3s linear infinite;
+    color: white;
+    font-size: 20px;
+    animation: floatUp 5s linear infinite;
+    opacity: 0.7;
 }
 
-@keyframes sparkle {
-    from { transform: translateY(0); opacity: 1; }
-    to { transform: translateY(-200px); opacity: 0; }
+/* Animations */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(-10vh);
+        opacity: 1;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎵 LOCAL MUSIC -->
-<audio id="music" preload="auto">
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
+<!-- Floating hearts -->
+<div class="heart" style="left:10%">💖</div>
+<div class="heart" style="left:30%">💗</div>
+<div class="heart" style="left:50%">💞</div>
+<div class="heart" style="left:70%">💕</div>
+<div class="heart" style="left:90%">💓</div>
 
-<!-- 🔥 START BUTTON (important for sound) -->
-<button class="startBtn" id="startBtn">Tap to Start 💖</button>
+<!-- Flower -->
+<div class="flower" onclick="showMessage()">🌸</div>
 
-<!-- 🌹 Rose -->
-<img 
-class="rose" 
-id="rose"
-src="https://pngimg.com/uploads/rose/rose_PNG659.png"
->
-
-<!-- 💌 Message -->
-<div class="message" id="message"></div>
+<!-- Message -->
+<div class="message" id="msg">
+    <h1>🎉 Happy Birthday Sukhi Pookie 🎂</h1>
+    
+    <div class="ribbon">🎀</div>
+    
+    <p>May your day be as sweet and lovely as you 💖✨</p>
+</div>
 
 <script>
-const startBtn = document.getElementById("startBtn");
-const rose = document.getElementById("rose");
-const message = document.getElementById("message");
-const music = document.getElementById("music");
-
-const text = "Happy Birthday Sukhi Pookie 🎀🌹\n(Sweetest person ever 🍓🤍)";
-
-// 💖 START (fixes music issue 100%)
-startBtn.onclick = function() {
-    startBtn.style.display = "none";
-    rose.style.display = "block";
-
-    music.volume = 1;
-    music.currentTime = 0;
-
-    music.play().then(()=>{
-        console.log("Music started 🎵");
-    }).catch(()=>{
-        alert("Tap again to enable music 🎵");
-    });
-};
-
-// 💌 Typing effect
-function typeText() {
-    let i = 0;
-    message.style.opacity = 1;
-
-    function typing() {
-        if (i < text.length) {
-            message.innerHTML += text.charAt(i) === "\n" ? "<br>" : text.charAt(i);
-            i++;
-            setTimeout(typing, 50);
-        }
-    }
-    typing();
+function showMessage() {
+    document.querySelector(".flower").style.display = "none";
+    document.getElementById("msg").style.display = "block";
 }
-
-// ✨ Sparkles
-function createSparkles() {
-    for (let i = 0; i < 40; i++) {
-        let s = document.createElement("div");
-        s.classList.add("sparkle");
-        s.style.left = Math.random() * window.innerWidth + "px";
-        s.style.top = window.innerHeight + "px";
-        document.body.appendChild(s);
-        setTimeout(() => s.remove(), 4000);
-    }
-}
-
-// 🌹 Click rose
-rose.onclick = function() {
-    rose.style.display = "none";
-    typeText();
-    createSparkles();
-};
 </script>
 
 </body>
